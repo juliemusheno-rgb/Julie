@@ -22,24 +22,53 @@ no cloud required.
   moving to another computer.
 - **Print or Save as PDF** — the whole book, or a **single recipe** (hover a recipe
   and click **Print**). Letter-sized, one recipe per page.
+- **📸 Scan a recipe from a photo** — point Claude's vision at a recipe card or
+  cookbook page and it fills in the recipe for you (optional; needs an API key).
 - **Saves automatically** to this device. Your edits are there next time you open it.
 
 ### Recipe Dashboard (the "back office")
 
 Open the **Dashboard** (button in the toolbar, the ⚙ link in the sidebar, or
-**Go ▸ Recipe Dashboard** / `Cmd+2`) to add and manage recipes two ways:
+**Go ▸ Recipe Dashboard** / `Cmd+2`) to add and manage recipes three ways:
 
-1. **Upload or paste a recipe** — drop in a `.txt`, `.md`, `.html`, or `.json`
+1. **📸 Scan a photo (AI)** — snap or upload a photo of a recipe card, cookbook
+   page, or screenshot, and Claude's vision reads it into a structured recipe.
+   The draft opens in the editor for you to review before saving. Requires a
+   one-time Anthropic API key setup (see below).
+2. **Upload or paste a recipe** — drop in a `.txt`, `.md`, `.html`, or `.json`
    file (or paste the text), and it's parsed into a recipe card. The draft opens
    in the editor so you can review and tidy it before saving. The parser
    recognizes a title, `Ingredients:` / `Directions:` / `Notes:` sections,
    sub-groups (e.g. `Topping:`), details like `Prep: 20 min`, and `Source:` lines.
-2. **Type a new recipe** — open a clean form with ingredient groups, numbered
+3. **Type a new recipe** — open a clean form with ingredient groups, numbered
    steps, details, a story, and notes.
 
 The dashboard also lists every recipe (grouped by chapter) with quick **View /
 Edit / Delete**, plus search, chapter filter, and export/import. Anything you do
 here shows up in the cookbook immediately.
+
+#### Setting up photo scanning
+
+Photo scanning uses Anthropic's Claude API, so it needs an API key:
+
+1. Get a key at **[console.anthropic.com](https://console.anthropic.com)** → *API Keys*
+   (you'll need a small amount of credit — scanning a recipe costs a few US cents).
+2. In the dashboard, click **set it up** under the *Scan a photo* card (or the ⚙ in
+   the scan area), paste your key, choose a model, and **Save**.
+
+Then drag in one or more photos and click **Scan recipe →**.
+
+- **Your key stays on this device.** It's saved in local storage and sent
+  directly from the app to Anthropic to read your photo — nowhere else.
+- **Models:** Opus 4.8 (most accurate, default), Sonnet 4.6 (faster), or
+  Haiku 4.5 (cheapest) — switch anytime in the settings dialog.
+- **Formats:** JPG, PNG, and WebP. iPhone **HEIC** photos aren't supported by the
+  API — open one in Preview and **File ▸ Export** to JPEG first. Photos are
+  automatically downscaled before upload to keep things fast and cheap.
+- **Multi-page recipes:** add several photos at once and they're read together as
+  one recipe.
+- Scanning always produces a **draft you review in the editor** — nothing is saved
+  until you click Save.
 
 ---
 
@@ -136,6 +165,7 @@ file you can keep safe or re-import later.
     ├── styles.css       The "Sage & Clay" design + UI styles
     ├── store.js         Shared data layer + recipe-text parser
     ├── editor.js        Shared recipe editor modal
+    ├── ai-scan.js       Photo → recipe via the Claude vision API
     ├── app.js           Cookbook: rendering, search, print, import/export
     ├── dashboard.js     Dashboard: entry, parsing, management table
     └── recipes.seed.js  The 33 starter recipes

@@ -26,6 +26,8 @@
 
     $("dashMark").innerHTML = S.MARK;
     $("dzMark").innerHTML = S.MARK;
+    $("scanMark").innerHTML = S.MARK;
+    CookbookAI.init();
 
     CookbookEditor.init({
       getRecipes: function () { return recipes; },
@@ -195,10 +197,81 @@
     sel.value = catFilter;
   }
 
+  // ── scan a photo (AI) ──────────────────────────────────────────────────────
+  var scanFiles = [];
+
+  function renderScanPreviews() {
+    var wrap = $("scanPreviews");
+    wrap.innerHTML = scanFiles.map(function (f, i) {
+      return '<span class="thumb"><img src="' + URL.createObjectURL(f) + '" alt="">' +
+        '<button class="thumb-x" data-rm="' + i + '" title="Remove">&times;</button></span>';
+    }).join("");
+    wrap.querySelectorAll("[data-rm]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        scanFiles.splice(parseInt(b.getAttribute("data-rm"), 10), 1);
+        renderScanPreviews();
+      });
+    });
+    $("scanBtn").disabled = scanFiles.length === 0;
+  }
+
+  function addScanFiles(list) {
+    Array.prototype.slice.call(list || []).forEach(function (f) {
+      if (/^image\//.test(f.type)) scanFiles.push(f);
+    });
+    if (scanFiles.length > 6) scanFiles = scanFiles.slice(0, 6);
+    renderScanPreviews();
+  }
+
+  function setScanStatus(msg, kind) {
+    var el = $("scanStatus");
+    el.textContent = msg || "";
+    el.className = "scan-status" + (kind ? " " + kind : "");
+  }
+
+  async function runScan() {
+    if (!CookbookAI.hasKey()) {
+      setScanStatus("Add your API key to scan photos.", "err");
+      CookbookAI.openSettings(function () { if (scanFiles.length) runScan(); });
+      return;
+    }
+    $("scanBtn").disabled = true;
+    try {
+      var draft = await CookbookAI.scan(scanFiles, { onStatus: function (m) { setScanStatus(m, "busy"); } });
+      if (!draft.title) {
+        setScanStatus("Couldn't read a recipe from that photo. Try a clearer, well-lit image.", "err");
+      } else {
+        setScanStatus("Done — review and save.", "ok");
+        scanFiles = []; renderScanPreviews();
+        CookbookEditor.open(null, draft);
+      }
+    } catch (e) {
+      if (e && e.message === "NO_KEY") { CookbookAI.openSettings(function () { runScan(); }); }
+      else { setScanStatus((e && e.message) || "Scan failed.", "err"); }
+    } finally {
+      $("scanBtn").disabled = scanFiles.length === 0;
+    }
+  }
+
   // ── wiring ─────────────────────────────────────────────────────────────────
   function wire() {
     $("blankBtn").addEventListener("click", function () { CookbookEditor.open(null); });
     $("parseBtn").addEventListener("click", function () { createFromText($("pasteArea").value, ""); });
+
+    // Scan a photo
+    $("scanBrowse").addEventListener("click", function () { $("scanInput").click(); });
+    $("scanZone").addEventListener("click", function (e) { if (e.target.id !== "scanBrowse") $("scanInput").click(); });
+    $("scanInput").addEventListener("change", function (e) { addScanFiles(e.target.files); e.target.value = ""; });
+    $("scanBtn").addEventListener("click", runScan);
+    $("scanSettings").addEventListener("click", function () { CookbookAI.openSettings(); });
+    var sz = $("scanZone");
+    ["dragenter", "dragover"].forEach(function (ev) {
+      sz.addEventListener(ev, function (e) { e.preventDefault(); e.stopPropagation(); sz.classList.add("drag"); });
+    });
+    ["dragleave", "drop"].forEach(function (ev) {
+      sz.addEventListener(ev, function (e) { e.preventDefault(); e.stopPropagation(); sz.classList.remove("drag"); });
+    });
+    sz.addEventListener("drop", function (e) { if (e.dataTransfer) addScanFiles(e.dataTransfer.files); });
 
     $("browseBtn").addEventListener("click", function () { $("fileInput").click(); });
     $("dropzone").addEventListener("click", function (e) {

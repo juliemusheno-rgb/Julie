@@ -29,6 +29,28 @@
   <!-- ── Entry options ──────────────────────────────────────────────── -->
   <section class="entry-grid">
 
+    <!-- Scan a photo (AI) -->
+    <div class="entry-card feature">
+      <div class="badge">AI</div>
+      <h2>Scan a photo</h2>
+      <p class="entry-desc">Snap or upload a photo of a recipe card, cookbook page, or
+        screenshot, and AI reads it into a recipe card for you to review.</p>
+
+      <div class="dropzone" id="scanZone">
+        <div class="dz-mark" id="scanMark"></div>
+        <div class="dz-text"><strong>Drag &amp; drop photo(s)</strong><br>
+          <span>or <button type="button" class="link-btn" id="scanBrowse">choose images</button></span></div>
+        <div class="dz-formats">JPG · PNG · WebP</div>
+      </div>
+      <input type="file" id="scanInput" accept="image/png,image/jpeg,image/webp,image/gif" multiple style="display:none">
+
+      <div class="scan-previews" id="scanPreviews"></div>
+      <div class="scan-status" id="scanStatus"></div>
+
+      <button class="btn primary full" id="scanBtn" disabled>Scan recipe &#8594;</button>
+      <div class="entry-note">Needs an Anthropic API key — <button type="button" class="link-btn" id="scanSettings">set it up</button>. Stored on this device only. The draft opens in the editor for review.</div>
+    </div>
+
     <!-- Upload / paste -->
     <div class="entry-card">
       <h2>Upload or paste a recipe</h2>
@@ -91,6 +113,7 @@
 <script src="recipes.seed.js"></script>
 <script src="store.js"></script>
 <script src="editor.js"></script>
+<script src="ai-scan.js"></script>
 <script src="dashboard.js"></script>
 </body>
 </html>
