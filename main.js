@@ -12,6 +12,10 @@ function send(action) {
   }
 }
 
+function loadPage(file) {
+  if (mainWindow) mainWindow.loadFile(path.join(__dirname, "src", file));
+}
+
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1180,
@@ -28,7 +32,7 @@ function createWindow() {
     },
   });
 
-  mainWindow.loadFile(path.join(__dirname, "src", "index.html"));
+  loadPage("index.html");
 
   // Open external links (e.g. recipe sources) in the user's browser.
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
@@ -65,6 +69,13 @@ function buildMenu() {
         { role: "cut" }, { role: "copy" }, { role: "paste" }, { role: "selectAll" },
         { type: "separator" },
         { label: "Find / Search", accelerator: "CmdOrCtrl+F", click: () => send("search") },
+      ],
+    },
+    {
+      label: "Go",
+      submenu: [
+        { label: "Cookbook", accelerator: "CmdOrCtrl+1", click: () => loadPage("index.html") },
+        { label: "Recipe Dashboard", accelerator: "CmdOrCtrl+2", click: () => loadPage("dashboard.html") },
       ],
     },
     {

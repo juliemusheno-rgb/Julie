@@ -29,6 +29,7 @@
       <button class="clear" id="searchClear" title="Clear search">&times;</button>
     </div>
     <select id="categoryFilter" title="Filter by chapter"></select>
+    <a class="tb-btn" href="dashboard.html" title="Open the recipe dashboard">&#9881; Dashboard</a>
     <button class="tb-btn primary" id="addBtn">+ Add Recipe</button>
     <div class="tb-menu" id="moreMenu">
       <button class="tb-btn" id="moreBtn">More &#9662;</button>
@@ -50,76 +51,11 @@
 <!-- Hidden file input for import -->
 <input type="file" id="importFile" accept="application/json,.json" style="display:none">
 
-<!-- Editor modal -->
-<div class="modal-backdrop" id="modalBackdrop">
-  <div class="modal" role="dialog" aria-modal="true">
-    <div class="modal-head">
-      <h2 id="modalTitle">Add Recipe</h2>
-      <button class="x" id="modalClose" title="Close">&times;</button>
-    </div>
-    <div class="modal-body">
-      <input type="hidden" id="f_id">
-
-      <div class="field">
-        <label for="f_title">Title</label>
-        <input type="text" id="f_title" placeholder="e.g. Grandma's Apple Pie">
-      </div>
-
-      <div class="two-col">
-        <div class="field">
-          <label for="f_category">Chapter</label>
-          <div class="cat-row">
-            <select id="f_category"></select>
-          </div>
-          <input type="text" id="f_categoryNew" placeholder="…or type a new chapter" style="margin-top:8px;display:none;">
-          <div class="hint">Pick a chapter, or choose "New chapter…" to create one.</div>
-        </div>
-        <div class="field">
-          <label for="f_source">Source / credit <span style="text-transform:none;letter-spacing:0;color:var(--ink-soft);font-weight:400;">(optional)</span></label>
-          <input type="text" id="f_source" placeholder="e.g. adapted from allrecipes.com">
-        </div>
-      </div>
-
-      <div class="field">
-        <label for="f_story">Story <span style="text-transform:none;color:var(--ink-soft);font-weight:400;">(optional)</span></label>
-        <textarea id="f_story" rows="2" placeholder="A line or two about this dish…"></textarea>
-      </div>
-
-      <div class="field">
-        <label>Details <span style="text-transform:none;color:var(--ink-soft);font-weight:400;">(yields, prep, bake, etc.)</span></label>
-        <div class="meta-rows" id="metaRows"></div>
-        <button type="button" class="add-link" id="addMetaBtn">+ Add detail</button>
-      </div>
-
-      <div class="field">
-        <label>Ingredients</label>
-        <div id="ingGroups"></div>
-        <button type="button" class="add-link" id="addGroupBtn">+ Add ingredient group</button>
-        <div class="hint">One ingredient per line. Add extra groups for multi-part recipes (e.g. "Sauce", "Topping").</div>
-      </div>
-
-      <div class="field">
-        <label for="f_steps">Directions</label>
-        <textarea id="f_steps" rows="7" placeholder="One step per line. They'll be numbered automatically."></textarea>
-        <div class="hint">One step per line — numbering is added for you.</div>
-      </div>
-
-      <div class="field">
-        <label for="f_note">Note <span style="text-transform:none;color:var(--ink-soft);font-weight:400;">(optional)</span></label>
-        <textarea id="f_note" rows="2" placeholder="Make-ahead tips, substitutions, etc."></textarea>
-      </div>
-    </div>
-    <div class="modal-foot">
-      <button class="btn danger" id="deleteBtn" style="display:none;">Delete</button>
-      <div class="right">
-        <button class="btn" id="cancelBtn">Cancel</button>
-        <button class="btn primary" id="saveBtn">Save recipe</button>
-      </div>
-    </div>
-  </div>
-</div>
+<!-- The editor modal is injected by editor.js (shared with the dashboard). -->
 
 <script src="recipes.seed.js"></script>
+<script src="store.js"></script>
+<script src="editor.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

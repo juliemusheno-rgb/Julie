@@ -24,6 +24,23 @@ no cloud required.
   and click **Print**). Letter-sized, one recipe per page.
 - **Saves automatically** to this device. Your edits are there next time you open it.
 
+### Recipe Dashboard (the "back office")
+
+Open the **Dashboard** (button in the toolbar, the ⚙ link in the sidebar, or
+**Go ▸ Recipe Dashboard** / `Cmd+2`) to add and manage recipes two ways:
+
+1. **Upload or paste a recipe** — drop in a `.txt`, `.md`, `.html`, or `.json`
+   file (or paste the text), and it's parsed into a recipe card. The draft opens
+   in the editor so you can review and tidy it before saving. The parser
+   recognizes a title, `Ingredients:` / `Directions:` / `Notes:` sections,
+   sub-groups (e.g. `Topping:`), details like `Prep: 20 min`, and `Source:` lines.
+2. **Type a new recipe** — open a clean form with ingredient groups, numbered
+   steps, details, a story, and notes.
+
+The dashboard also lists every recipe (grouped by chapter) with quick **View /
+Edit / Delete**, plus search, chapter filter, and export/import. Anything you do
+here shows up in the cookbook immediately.
+
 ---
 
 ## Running the app
@@ -84,6 +101,8 @@ with your Apple Developer ID for distribution.
 | Print / Save as PDF | `Cmd/Ctrl + P` |
 | Export recipes | `Cmd/Ctrl + S` |
 | Import recipes | `Cmd/Ctrl + O` |
+| Go to Cookbook | `Cmd/Ctrl + 1` |
+| Go to Dashboard | `Cmd/Ctrl + 2` |
 | Close dialog / menu | `Esc` |
 
 ---
@@ -112,9 +131,13 @@ file you can keep safe or re-import later.
 │   ├── icon.svg         Source artwork for the app icon
 │   └── icon.png         1024×1024 icon (used by electron-builder)
 └── src/
-    ├── index.html       App shell (toolbar, sidebar, editor modal)
+    ├── index.html       Cookbook shell (toolbar, sidebar)
+    ├── dashboard.html   Recipe dashboard (upload/paste/type + manage)
     ├── styles.css       The "Sage & Clay" design + UI styles
-    ├── app.js           Rendering, search, editor, import/export, print
+    ├── store.js         Shared data layer + recipe-text parser
+    ├── editor.js        Shared recipe editor modal
+    ├── app.js           Cookbook: rendering, search, print, import/export
+    ├── dashboard.js     Dashboard: entry, parsing, management table
     └── recipes.seed.js  The 33 starter recipes
 ```
 

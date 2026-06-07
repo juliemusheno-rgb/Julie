@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recipe Dashboard — Our Family Recipe Book</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,500&family=Hanken+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="dash">
+
+<header class="dash-header">
+  <div class="dash-header-inner">
+    <div class="dash-brand">
+      <div class="dash-mark" id="dashMark"></div>
+      <div>
+        <h1>Recipe Dashboard</h1>
+        <div class="dash-sub">Add and manage the recipes in <em>Our Family Recipe Book</em></div>
+      </div>
+    </div>
+    <a class="tb-btn" href="index.html">&#8592; View Cookbook</a>
+  </div>
+</header>
+
+<main class="dash-main">
+
+  <!-- ── Entry options ──────────────────────────────────────────────── -->
+  <section class="entry-grid">
+
+    <!-- Upload / paste -->
+    <div class="entry-card">
+      <h2>Upload or paste a recipe</h2>
+      <p class="entry-desc">Drop in a recipe file or paste the text — we'll turn it into a
+        recipe card you can review before saving.</p>
+
+      <div class="dropzone" id="dropzone">
+        <div class="dz-mark" id="dzMark"></div>
+        <div class="dz-text"><strong>Drag &amp; drop a file here</strong><br>
+          <span>or <button type="button" class="link-btn" id="browseBtn">browse your computer</button></span></div>
+        <div class="dz-formats">.txt · .md · .html · .json</div>
+      </div>
+      <input type="file" id="fileInput" accept=".txt,.md,.markdown,.html,.htm,.json,application/json,text/plain,text/markdown,text/html" style="display:none">
+
+      <div class="or-divider"><span>or paste text</span></div>
+
+      <textarea id="pasteArea" class="paste-area" rows="7" placeholder="Paste a recipe here. Tip: include lines like &#10;&#10;Ingredients:&#10;2 cups flour&#10;1 tsp salt&#10;&#10;Directions:&#10;1. Mix everything&#10;2. Bake at 350°"></textarea>
+      <button class="btn primary full" id="parseBtn">Create recipe card &#8594;</button>
+      <div class="entry-note">Parsing isn't perfect — the draft always opens in the editor for you to tidy up.</div>
+    </div>
+
+    <!-- Type new -->
+    <div class="entry-card">
+      <h2>Type a new recipe</h2>
+      <p class="entry-desc">Prefer to enter it by hand? Open a clean form with fields for
+        ingredients (in groups), numbered steps, details, a story, and notes.</p>
+      <ul class="entry-points">
+        <li>Multi-part ingredient groups (e.g. "Sauce" + "Topping")</li>
+        <li>Auto-numbered directions</li>
+        <li>Details like yields, prep, and bake time</li>
+        <li>Assign it to a chapter, or create a new one</li>
+      </ul>
+      <button class="btn primary full" id="blankBtn">+ New blank recipe</button>
+      <div class="entry-note">Saved recipes appear instantly in the cookbook.</div>
+    </div>
+
+  </section>
+
+  <!-- ── Manage existing ────────────────────────────────────────────── -->
+  <section class="manage">
+    <div class="manage-head">
+      <h2>All recipes <span class="count" id="recipeCount"></span></h2>
+      <div class="manage-tools">
+        <div class="search-wrap" id="dSearchWrap">
+          <span class="ic">&#9906;</span>
+          <input type="text" id="dSearch" placeholder="Search…" autocomplete="off" spellcheck="false">
+          <button class="clear" id="dSearchClear" title="Clear">&times;</button>
+        </div>
+        <select id="dCategory" title="Filter by chapter"></select>
+        <button class="tb-btn" id="dExport">Export .json</button>
+        <button class="tb-btn" id="dImport">Import .json</button>
+        <input type="file" id="dImportFile" accept="application/json,.json" style="display:none">
+      </div>
+    </div>
+    <div id="recipeTable"></div>
+  </section>
+
+</main>
+
+<script src="recipes.seed.js"></script>
+<script src="store.js"></script>
+<script src="editor.js"></script>
+<script src="dashboard.js"></script>
+</body>
+</html>
