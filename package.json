@@ -1,0 +1,27 @@
+{
+  "name": "julie-cookbook",
+  "version": "1.0.0",
+  "description": "Julie's Cookbook — a desktop app for collecting, searching, and cooking your recipes.",
+  "main": "main.js",
+  "author": "Julie",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^31.0.0"
+  },
+  "build": {
+    "appId": "marketing.jkm.cookbook",
+    "productName": "Julie's Cookbook",
+    "files": [
+      "main.js",
+      "preload.js",
+      "src/**/*"
+    ],
+    "mac": { "category": "public.app-category.lifestyle" },
+    "win": { "target": "nsis" },
+    "linux": { "target": "AppImage" }
+  }
+}
