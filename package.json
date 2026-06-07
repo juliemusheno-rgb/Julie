@@ -1,27 +1,57 @@
 {
   "name": "julie-cookbook",
   "version": "1.0.0",
-  "description": "Julie's Cookbook — a desktop app for collecting, searching, and cooking your recipes.",
+  "description": "Our Family Recipe Book — a desktop app for collecting, searching, and cooking your recipes.",
   "main": "main.js",
   "author": "Julie",
   "license": "MIT",
   "scripts": {
     "start": "electron .",
-    "dist": "electron-builder"
+    "dist": "electron-builder",
+    "dist:mac": "electron-builder --mac",
+    "dist:win": "electron-builder --win",
+    "dist:linux": "electron-builder --linux"
   },
   "devDependencies": {
-    "electron": "^31.0.0"
+    "electron": "^31.0.0",
+    "electron-builder": "^24.13.3"
   },
   "build": {
     "appId": "marketing.jkm.cookbook",
-    "productName": "Julie's Cookbook",
+    "productName": "Our Family Recipe Book",
+    "directories": {
+      "buildResources": "build",
+      "output": "dist"
+    },
     "files": [
       "main.js",
       "preload.js",
       "src/**/*"
     ],
-    "mac": { "category": "public.app-category.lifestyle" },
-    "win": { "target": "nsis" },
-    "linux": { "target": "AppImage" }
+    "mac": {
+      "category": "public.app-category.lifestyle",
+      "target": [
+        { "target": "dmg", "arch": ["arm64", "x64"] },
+        { "target": "zip", "arch": ["arm64", "x64"] }
+      ]
+    },
+    "dmg": {
+      "title": "Our Family Recipe Book"
+    },
+    "win": {
+      "target": [
+        { "target": "nsis", "arch": ["x64"] }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "shortcutName": "Our Family Recipe Book"
+    },
+    "linux": {
+      "target": ["AppImage"],
+      "category": "Utility"
+    }
   }
 }

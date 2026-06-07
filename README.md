@@ -20,7 +20,8 @@ no cloud required.
   a story, source credit, and notes.
 - **Export & import** your collection as a `.json` file — perfect for backups or
   moving to another computer.
-- **Print or Save as PDF** — letter-sized, one recipe per page.
+- **Print or Save as PDF** — the whole book, or a **single recipe** (hover a recipe
+  and click **Print**). Letter-sized, one recipe per page.
 - **Saves automatically** to this device. Your edits are there next time you open it.
 
 ---
@@ -45,16 +46,32 @@ editing, and local saving all work the same way.
 > Tip: the desktop app and the browser version each keep their own local copy of
 > your recipes. Use **Export / Import** to move recipes between them.
 
-### Building an installer (optional)
+### Building a packaged installer
 
-To package a standalone app you can double-click (`.app`, `.exe`, or `.AppImage`):
+The project is configured with [electron-builder](https://www.electron.build/) so
+you can produce a standalone, double-clickable app. **Build on the OS you're
+targeting** (macOS installers must be built on a Mac, Windows on Windows):
 
 ```bash
-npm install --save-dev electron-builder
-npm run dist
+npm install            # installs electron + electron-builder
+npm run dist           # build for the machine you're on
 ```
 
-The installer appears in the `dist/` folder.
+…or target a specific platform:
+
+```bash
+npm run dist:mac       # .dmg + .zip  (run on macOS)
+npm run dist:win       # .exe installer (NSIS, run on Windows)
+npm run dist:linux     # .AppImage   (run on Linux)
+```
+
+The finished installer lands in the **`dist/`** folder. On first launch on macOS,
+right-click the app and choose **Open** (since it isn't code-signed), or sign it
+with your Apple Developer ID for distribution.
+
+> **Icon:** the app icon is generated automatically from `build/icon.png`
+> (a 1024×1024 sage-sprig mark). Edit `build/icon.svg` and re-export `icon.png`
+> to change it.
 
 ---
 
@@ -91,6 +108,9 @@ file you can keep safe or re-import later.
 ├── main.js              Electron main process (window + app menu)
 ├── preload.js           Secure bridge for menu actions
 ├── package.json         Scripts and build config
+├── build/
+│   ├── icon.svg         Source artwork for the app icon
+│   └── icon.png         1024×1024 icon (used by electron-builder)
 └── src/
     ├── index.html       App shell (toolbar, sidebar, editor modal)
     ├── styles.css       The "Sage & Clay" design + UI styles

@@ -219,6 +219,7 @@
     return '<section class="page recipe" id="' + esc(recId(r)) + '" data-id="' + esc(r.id) + '">' +
       '<div class="r-actions">' +
         '<button class="edit" data-edit="' + esc(r.id) + '">Edit</button>' +
+        '<button class="print" data-print="' + esc(r.id) + '">Print</button>' +
         '<button class="del" data-del="' + esc(r.id) + '">Delete</button>' +
       '</div>' +
       '<div class="r-head"><div>' +
@@ -300,6 +301,30 @@
         removeRecipe(b.getAttribute("data-del"));
       });
     });
+    document.querySelectorAll("[data-print]").forEach(function (b) {
+      b.addEventListener("click", function (e) {
+        e.stopPropagation();
+        printRecipe(b.getAttribute("data-print"));
+      });
+    });
+  }
+
+  // Print (or save as PDF) a single recipe by temporarily hiding the rest.
+  function printRecipe(id) {
+    var target = "recipe-" + id;
+    var pages = document.querySelectorAll("#stage .page");
+    pages.forEach(function (p) { if (p.id !== target) p.classList.add("hidden-print"); });
+    var cleaned = false;
+    var cleanup = function () {
+      if (cleaned) return;
+      cleaned = true;
+      pages.forEach(function (p) { p.classList.remove("hidden-print"); });
+      window.removeEventListener("afterprint", cleanup);
+    };
+    window.addEventListener("afterprint", cleanup);
+    window.print();
+    // Fallback in case afterprint never fires (timer runs once print returns).
+    setTimeout(cleanup, 400);
   }
 
   function findRecipe(id) {
