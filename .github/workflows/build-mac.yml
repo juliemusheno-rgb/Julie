@@ -33,7 +33,9 @@ jobs:
         run: npm install
 
       - name: Build the macOS .dmg (universal — Intel + Apple Silicon)
-        run: npm run dist:mac
+        # --publish never: we publish the Release ourselves in the step below,
+        # so electron-builder shouldn't try to (it would need its own token).
+        run: npm run dist:mac -- --publish never
         env:
           # The app isn't code-signed, so tell electron-builder not to try.
           CSC_IDENTITY_AUTO_DISCOVERY: "false"
@@ -49,9 +51,12 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # The .dmg filename contains spaces, so capture it into a quoted variable.
+          DMG="$(ls dist/*.dmg | head -n1)"
+          echo "Publishing: $DMG"
           # Replace any previous "latest" release so there's always one clean download.
           gh release delete cookbook-latest --yes --cleanup-tag || true
-          gh release create cookbook-latest dist/*.dmg \
+          gh release create cookbook-latest "$DMG" \
             --target "$GITHUB_REF_NAME" \
             --title "Our Family Recipe Book (latest)" \
             --notes "Download the .dmg below, double-click it, and drag the app into your Applications folder.
