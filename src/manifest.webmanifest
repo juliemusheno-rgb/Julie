@@ -1,0 +1,16 @@
+{
+  "name": "Our Family Recipe Book",
+  "short_name": "Recipe Book",
+  "description": "Our family's recipes — browse, search, and add your own.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#ECE6D7",
+  "theme_color": "#2B2F27",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

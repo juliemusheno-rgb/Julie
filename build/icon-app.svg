@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3A4233"/>
+      <stop offset="1" stop-color="#2B2F27"/>
+    </linearGradient>
+  </defs>
+  <!-- full-bleed background so iOS can mask it to a rounded square cleanly -->
+  <rect x="0" y="0" width="1024" height="1024" fill="url(#bg)"/>
+  <rect x="138" y="138" width="748" height="748" rx="150" ry="150" fill="none" stroke="#566350" stroke-width="6" opacity="0.55"/>
+  <!-- sage sprig (from the in-app mark; viewBox 0 0 60 72 → scale ~9, centered) -->
+  <g transform="translate(243,156) scale(9.0)">
+    <path d="M30 70 C30 52 30 28 30 10" stroke="#F7F3EA" stroke-width="2.0" fill="none" stroke-linecap="round"/>
+    <ellipse cx="23" cy="24" rx="9.5" ry="4.6" transform="rotate(-32 23 24)" fill="#8C9A82"/>
+    <ellipse cx="37" cy="33" rx="9.5" ry="4.6" transform="rotate(32 37 33)" fill="#8C9A82"/>
+    <ellipse cx="23" cy="42" rx="8.5" ry="4.2" transform="rotate(-32 23 42)" fill="#6E7F66"/>
+    <ellipse cx="37" cy="51" rx="8.5" ry="4.2" transform="rotate(32 37 51)" fill="#6E7F66"/>
+    <circle cx="30" cy="11" r="3.8" fill="#BC6B47"/>
+  </g>
+</svg>

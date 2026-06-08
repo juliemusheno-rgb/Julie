@@ -1,0 +1,46 @@
+# Publishes the web version of the app to GitHub Pages, so it can be opened
+# in Safari on an iPad/iPhone and added to the Home Screen.
+#
+# After it runs once, the site lives at:
+#   https://juliemusheno-rgb.github.io/Julie/
+name: Publish web app (GitHub Pages)
+
+on:
+  push:
+    branches: ["claude/julie-cookbook-app-GrrvZ"]
+  workflow_dispatch: {}
+
+# Permissions needed to publish to Pages.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let only one Pages deploy run at a time.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true # turns Pages on automatically the first time
+
+      - name: Upload the app (the src folder) as the website
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: src
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
