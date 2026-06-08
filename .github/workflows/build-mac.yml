@@ -1,0 +1,59 @@
+# Builds the macOS .dmg in the cloud (on a real Mac) and posts it as a download.
+#
+# It runs automatically whenever this branch is updated, and can also be run
+# by hand from the repo's "Actions" tab (the "Run workflow" button).
+#
+# When it finishes, the .dmg is available two ways:
+#   1. Repo home page → "Releases" (right sidebar) → "Our Family Recipe Book"
+#      → download the .dmg directly. (Easiest.)
+#   2. Actions tab → the finished run → "Artifacts" at the bottom.
+name: Build macOS app
+
+on:
+  push:
+    branches: ["claude/julie-cookbook-app-GrrvZ"]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write # allows publishing the .dmg as a downloadable release
+
+jobs:
+  build-mac:
+    runs-on: macos-latest # a real Mac, hosted by GitHub
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the macOS .dmg (universal — Intel + Apple Silicon)
+        run: npm run dist:mac
+        env:
+          # The app isn't code-signed, so tell electron-builder not to try.
+          CSC_IDENTITY_AUTO_DISCOVERY: "false"
+
+      - name: Upload the .dmg as a build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Our-Family-Recipe-Book-dmg
+          path: dist/*.dmg
+          if-no-files-found: error
+
+      - name: Publish the .dmg as a downloadable Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Replace any previous "latest" release so there's always one clean download.
+          gh release delete cookbook-latest --yes --cleanup-tag || true
+          gh release create cookbook-latest dist/*.dmg \
+            --target "$GITHUB_REF_NAME" \
+            --title "Our Family Recipe Book (latest)" \
+            --notes "Download the .dmg below, double-click it, and drag the app into your Applications folder.
+
+          First time you open it: right-click the app in Applications → **Open** → **Open** again (this is needed once because the app isn't signed with Apple)."
